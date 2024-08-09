@@ -18,7 +18,6 @@ vim.g.mapleader = ','
 vim.g.maplocalleader = ','
 
 
-
 -- settings
 require('core.settings')
 -- keymaps
@@ -27,6 +26,7 @@ require('core.keymaps')
 require('core.commands')
 -- auto commands
 require('core.autocommands')
+
 
 -- lazy options
 local opts = {
@@ -44,7 +44,8 @@ local opts = {
 --require('lazy').setup({ { import = 'plugins' }, { import = 'plugins.lsp' } }, opts)
 require('lazy').setup(
     {
-        { import = 'plugins' } 
+        { import = 'plugins' },
+        { import = 'plugins.lsp' } 
     },
     opts
 )

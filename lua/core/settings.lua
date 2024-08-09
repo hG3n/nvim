@@ -37,3 +37,7 @@ vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
 end)
 
+-- soft wrap and indent lines
+vim.opt.breakindent = true
+vim.opt.showbreak="\\"
+

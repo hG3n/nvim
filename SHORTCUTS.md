@@ -55,7 +55,7 @@ Leader key: `,`
 
 | Mode | Key | Action |
 |------|-----|--------|
-| Normal | `<C-n>` | Toggle file tree |
+| Normal | `<C-n>` / `Cmd+1` | Toggle file tree (`Cmd+1` via Ghostty keybind sending `<C-n>`) |
 | Normal | `,e` | Focus file tree |
 
 ## Command-line Aliases

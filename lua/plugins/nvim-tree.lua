@@ -32,10 +32,15 @@ return {
             callback = function(data)
                 local is_dir = vim.fn.isdirectory(data.file) == 1
                 local no_file = data.file == '' or vim.fn.filereadable(data.file) == 0
-                if is_dir or no_file then
-                    require('nvim-tree.api').tree.toggle({ focus = false })
-                else
-                    require('nvim-tree.api').tree.toggle({ focus = false })
+                if is_dir then
+                    vim.cmd.cd(data.file)
+                    -- Create a scratch buffer in the main window before the tree opens,
+                    -- so after nvim-tree wipes the directory buffer there is still a
+                    -- non-NvimTree window — otherwise the auto-quit BufEnter fires.
+                    local scratch = vim.api.nvim_create_buf(false, true)
+                    vim.api.nvim_set_current_buf(scratch)
+                    require('nvim-tree.api').tree.open({ focus = true })
+                elseif not no_file then
                     -- wipe the empty buffer left behind when dashboard bails on file open
                     vim.schedule(function()
                         for _, buf in ipairs(vim.api.nvim_list_bufs()) do
@@ -46,6 +51,18 @@ return {
                             end
                         end
                     end)
+                end
+            end,
+        })
+
+        vim.api.nvim_create_autocmd('BufEnter', {
+            nested = true,
+            callback = function()
+                if #vim.api.nvim_list_wins() == 1
+                    and vim.bo.filetype == 'NvimTree' then
+                    -- Open a new empty buffer rather than quitting, so the session
+                    -- survives when the user closes the last editing window.
+                    vim.cmd('enew')
                 end
             end,
         })
